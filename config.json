@@ -1,0 +1,18 @@
+{
+    "base_url": "https://api-docs.deepseek.com",
+    "output_dir": "output",
+    "exclude_paths": ["zh-cn"],
+    "exclude_patterns": [],
+    "max_depth": 5,
+    "max_workers": 4,
+    "rate_limit_delay": {
+        "min": 1,
+        "max": 3
+    },
+    "retry_config": {
+        "total": 5,
+        "backoff_factor": 0.5,
+        "status_forcelist": [500, 502, 503, 504, 404]
+    },
+    "request_timeout": 10
+}
