@@ -14,5 +14,7 @@
         "backoff_factor": 0.5,
         "status_forcelist": [500, 502, 503, 504, 404]
     },
-    "request_timeout": 10
+    "request_timeout": 10,
+    "combine_output": true,
+    "combined_file_name": "combined_docs.md"
 }

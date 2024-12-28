@@ -223,6 +223,33 @@ def save_markdown(content, url_path):
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(content)
 
+def combine_markdown_files():
+    """Combine all markdown files in output directory into one file"""
+    combined_content = []
+    combined_file = CONFIG.get('combined_file_name', 'combined_docs.md')
+    
+    # Walk through the output directory
+    for root, _, files in os.walk(OUTPUT_DIR):
+        for file in sorted(files):
+            if file.endswith('.md') and file != combined_file:
+                file_path = os.path.join(root, file)
+                rel_path = os.path.relpath(file_path, OUTPUT_DIR)
+                
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                # Add section header
+                section_header = f"\n\n# {rel_path[:-3]}\n\n"  # Remove .md extension
+                combined_content.append(section_header)
+                combined_content.append(content)
+    
+    # Save combined content
+    if combined_content:
+        combined_file_path = os.path.join(OUTPUT_DIR, combined_file)
+        with open(combined_file_path, 'w', encoding='utf-8') as f:
+            f.write("".join(combined_content))
+        print(f"Combined documentation saved to: {combined_file_path}")
+
 def main():
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
@@ -232,6 +259,10 @@ def main():
     
     # Start crawling from the base URL with thread pool
     process_with_threadpool(BASE_URL, max_depth, max_workers)
+    
+    # Combine markdown files if enabled
+    if CONFIG.get('combine_output', False):
+        combine_markdown_files()
     
     # Save a summary of processed URLs
     with open(os.path.join(OUTPUT_DIR, 'processed_urls.txt'), 'w', encoding='utf-8') as f:

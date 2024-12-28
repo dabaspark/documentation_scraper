@@ -71,15 +71,14 @@ python scraper.py
   "output_dir": "docs/api"   // Custom nested directory
   ```
 
-- `exclude_paths`: List of path segments to exclude from scraping
-  ```json
-  "exclude_paths": ["zh-cn"]                    // Skip Chinese docs
-  "exclude_paths": ["zh-cn", "fr", "beta"]      // Skip multiple paths
-  "exclude_paths": ["v1", "deprecated"]         // Skip old versions
-  ```
-for examples this sites will not be scrapped if "exclude_paths": ["zh-cn"]  
-https://api-docs.deepseek.com/zh-cn/guides
-https://api-docs.deepseek.com/zh-cn/news/news1120
+- `exclude_paths`: List of path segments to exclude from scraping. For example, if you set `"exclude_paths": ["zh-cn"]`, the following URLs will be excluded:
+    - `https://api-docs.deepseek.com/zh-cn/guides`
+    - `https://api-docs.deepseek.com/zh-cn/news/news1120`
+    ```json
+    "exclude_paths": ["zh-cn"]                    // Skip Chinese docs
+    "exclude_paths": ["zh-cn", "fr", "beta"]      // Skip multiple paths
+    "exclude_paths": ["v1", "deprecated"]         // Skip old versions
+    ```
 
 - `max_depth`: Maximum depth level for crawling
   ```json
@@ -95,14 +94,13 @@ https://api-docs.deepseek.com/zh-cn/news/news1120
   "max_workers": 8    // Faster but may overwhelm some servers
   ```
 
-- `combine_output`: Whether to combine all markdown files into one
-The combined output will maintain the structure using markdown headers and include all content in a single file, making it easier to use as a single reference or for AI/LLM purposes.
+- `combine_output`: Option to combine all markdown files into a single file. When enabled, the combined output will maintain the structure using markdown headers and include all content in one file. This is useful for creating a single reference document for AI/LLM purposes.
 
-Note: Files are still saved individually AND combined when enabled
-  ```json
-  "combine_output": true,    // Enable combined output file
-  "combine_output": false    // Keep files separate only
-  ```
+    Note: Individual files are still saved separately in addition to the combined file when this option is enabled.
+    ```json
+    "combine_output": true,    // Enable combined output file
+    "combine_output": false    // Keep files separate only
+    ```
 
 - `combined_file_name`: Name of the combined output file
   ```json
