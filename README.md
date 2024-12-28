@@ -1,4 +1,4 @@
-# API Documentation Scraper
+# Documentation Scraper
 
 A configurable web scraper that converts API documentation websites to Markdown format. This tool can be used for any API documentation site with similar structure.
 
@@ -46,6 +46,8 @@ pip install -r requirements.txt
         "status_forcelist": [500, 502, 503, 504, 404]  // Status codes to retry
     },
     "request_timeout": 10                         // Request timeout in seconds
+    "combine_output": true,                       // combine all docs into one file  
+    "combined_file_name": "combined_docs.md"      // name of the combined file output
 }
 ```
 
@@ -75,6 +77,9 @@ python scraper.py
   "exclude_paths": ["zh-cn", "fr", "beta"]      // Skip multiple paths
   "exclude_paths": ["v1", "deprecated"]         // Skip old versions
   ```
+for examples this sites will not be scrapped if "exclude_paths": ["zh-cn"]  
+https://api-docs.deepseek.com/zh-cn/guides
+https://api-docs.deepseek.com/zh-cn/news/news1120
 
 - `max_depth`: Maximum depth level for crawling
   ```json
@@ -88,6 +93,21 @@ python scraper.py
   "max_workers": 1    // Sequential processing, safest but slowest
   "max_workers": 4    // Balanced approach (recommended)
   "max_workers": 8    // Faster but may overwhelm some servers
+  ```
+
+- `combine_output`: Whether to combine all markdown files into one
+The combined output will maintain the structure using markdown headers and include all content in a single file, making it easier to use as a single reference or for AI/LLM purposes.
+
+Note: Files are still saved individually AND combined when enabled
+  ```json
+  "combine_output": true,    // Enable combined output file
+  "combine_output": false    // Keep files separate only
+  ```
+
+- `combined_file_name`: Name of the combined output file
+  ```json
+  "combined_file_name": "combined_docs.md"      // Default name
+  "combined_file_name": "full_documentation.md"  // Custom name
   ```
 
 ### Rate Limiting:
@@ -198,8 +218,9 @@ python scraper.py
 
 ## Output Structure
 
-The documentation will be saved in the output directory, maintaining the original URL structure:
+The documentation will be saved in two formats when `combine_output` is enabled:
 
+1. Individual files (default structure):
 ```
 output/
 ├── section1/
@@ -209,6 +230,18 @@ output/
 │   └── page3.md
 └── index.md
 ```
+
+2. Combined file (when enabled):
+```
+output/
+└── combined_docs.md  (or custom name)
+```
+
+The combined file will maintain the hierarchy using markdown headers and include all content in a single file, which can be useful for:
+- Full-text search
+- Easier importing into documentation systems
+- Single-file reference
+- AI/LLM training data
 
 ## Good Practice Guidelines
 
